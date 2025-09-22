@@ -10,15 +10,24 @@ class SliderPage extends StatefulWidget {
 }
 
 class _SliderPageState extends State<SliderPage> {
-  final List<String> sliderItems = [
+  // Carousel images
+  final List<String> carouselImages = [
+    'assets/images/basic.jpg',
+    'assets/images/standard.jpg',
+    'assets/images/premium.jpg',
+    'assets/images/family.jpg',
+  ];
+
+  // Corresponding popup images
+  final List<String> popupImages = [
     'assets/images/slider1.jpg',
     'assets/images/slider2.jpg',
     'assets/images/slider3.jpg',
     'assets/images/slider4.jpg',
   ];
 
-  // Function to show the full-screen image in a pop-up dialog
-  void _showImagePopup(BuildContext context, String imagePath) {
+  // Show full-screen popup
+  void _showImagePopup(BuildContext context, int index) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -28,9 +37,7 @@ class _SliderPageState extends State<SliderPage> {
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              // Full-screen image
-              Image.asset(imagePath, fit: BoxFit.contain),
-              // Close button
+              Image.asset(popupImages[index], fit: BoxFit.contain),
               Positioned(
                 top: 0,
                 right: 0,
@@ -67,11 +74,10 @@ class _SliderPageState extends State<SliderPage> {
             ),
           ),
           SizedBox(
-            // Set height to 30% of the screen
-            height: screenHeight * 0.3, 
-            child: CarouselSlider(
+            height: screenHeight * 0.3,
+            child: CarouselSlider.builder(
+              itemCount: carouselImages.length,
               options: CarouselOptions(
-                // Set height for the carousel items to match the SizedBox
                 height: screenHeight * 0.3,
                 enlargeCenterPage: true,
                 autoPlay: true,
@@ -80,29 +86,28 @@ class _SliderPageState extends State<SliderPage> {
                 autoPlayAnimationDuration: const Duration(milliseconds: 800),
                 viewportFraction: 0.8,
               ),
-              items: sliderItems.map((item) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return GestureDetector(
-                      onTap: () => _showImagePopup(context, item),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: Image.asset(item, fit: BoxFit.cover),
-                        ),
+              itemBuilder: (BuildContext context, int index, int realIndex) {
+                return GestureDetector(
+                  onTap: () => _showImagePopup(context, index),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: Image.asset(
+                        carouselImages[index],
+                        fit: BoxFit.cover,
                       ),
-                    );
-                  },
+                    ),
+                  ),
                 );
-              }).toList(),
+              },
             ),
           ),
-          
+
           const SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -120,7 +125,10 @@ class _SliderPageState extends State<SliderPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: const Text("Continue", style: TextStyle(fontSize: 18, color: Colors.white)),
+              child: const Text(
+                "Continue",
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
             ),
           ),
         ],

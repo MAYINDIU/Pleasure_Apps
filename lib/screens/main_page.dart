@@ -1,3 +1,4 @@
+import 'dart:io'; // For exit()
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'login_page.dart';
@@ -37,8 +38,24 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Main Menu"),
+        title: const Text(
+          "Select Menu",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
+        backgroundColor: Colors.teal,
+        // Custom back button
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            } else {
+              // Exit the app if no previous page
+              exit(0);
+            }
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -56,7 +73,10 @@ class MainPage extends StatelessWidget {
                   );
                 },
                 icon: const Icon(Icons.person, color: Colors.white),
-                label: const Text("Login / Signup", style: TextStyle(fontSize: 18, color: Colors.white)),
+                label: const Text(
+                  "Login / Signup",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.teal[700],
                   padding: const EdgeInsets.symmetric(vertical: 15),
@@ -71,7 +91,10 @@ class MainPage extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () => _showContactDialog(context),
                 icon: const Icon(Icons.phone, color: Colors.white),
-                label: const Text("Contact Us", style: TextStyle(fontSize: 18, color: Colors.white)),
+                label: const Text(
+                  "Contact Us",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.teal[500],
                   padding: const EdgeInsets.symmetric(vertical: 15),
@@ -86,7 +109,10 @@ class MainPage extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () => _launchUrl('https://pleasurebd.com/'),
                 icon: const Icon(Icons.language, color: Colors.white),
-                label: const Text("Our Website", style: TextStyle(fontSize: 18, color: Colors.white)),
+                label: const Text(
+                  "Our Website",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.teal[300],
                   padding: const EdgeInsets.symmetric(vertical: 15),
